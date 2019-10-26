@@ -15,8 +15,16 @@ date_since = "2019-10-14"
 tweets = tw.Cursor(api.search,
               q=search_words,
               lang="en",
-              since=date_since).items(15)
+              since=date_since).items(1000)
               
 # Iterate and print tweets
+# for tweet in tweets:
+#     print(tweet)
+
+# Store tweets in array and then pandas dataframe
+arr = []
+
 for tweet in tweets:
-    print(tweet.text)
+    arr.append({'created at': tweet.created_at, 'text': tweet.text, 'retweets': tweet.retweet_count, 'likes': tweet.favorite_count})
+
+pd.DataFrame(arr)

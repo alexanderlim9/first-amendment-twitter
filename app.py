@@ -15,16 +15,15 @@ date_since = "2019-10-14"
 tweets = tw.Cursor(api.search,
               q=search_words,
               lang="en",
-              since=date_since).items(1000)
+              since=date_since).items(50)
               
-# Iterate and print tweets
-# for tweet in tweets:
-#     print(tweet)
-
 # Store tweets in array and then pandas dataframe
 arr = []
 
 for tweet in tweets:
-    arr.append({'created at': tweet.created_at, 'text': tweet.text, 'retweets': tweet.retweet_count, 'likes': tweet.favorite_count})
+    follow_trump = api.show_friendship(tweet.user.id_str, tweet.user.screen_name, '25073877', 'realDonaldTrump')[0].following
+    follow_clinton = api.show_friendship(tweet.user.id_str, tweet.user.screen_name, '1339835893', 'HillaryClinton')[0].following
+    
+    arr.append({'created at': tweet.created_at, 'text': tweet.text, 'retweets': tweet.retweet_count, 'likes': tweet.favorite_count, 'follows trump': follow_trump, 'follows clinton': follow_clinton})
 
 pd.DataFrame(arr)
